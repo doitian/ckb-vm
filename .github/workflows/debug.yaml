@@ -13,7 +13,7 @@ env:
 jobs:
   package-for-windows:
     name: package-for-windows
-    runs-on: windows-latest
+    runs-on: windows-2019
     steps:
     - name: Install Dependencies
       run: |
@@ -25,8 +25,6 @@ jobs:
         echo "C:\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         echo "LIBCLANG_PATH=$env:USERPROFILE\scoop\apps\llvm\13.0.0\bin" >> $env:GITHUB_ENV
     - uses: actions/checkout@v2
-    - name: Setup tmate session
-      uses: mxschmitt/action-tmate@v3
     - name: Build
       run: |
         cargo build --verbose --release --features detect-asm
