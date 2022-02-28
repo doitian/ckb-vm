@@ -13,7 +13,7 @@ env:
 jobs:
   package-for-windows:
     name: package-for-windows
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
     - name: Install Dependencies
       run: |
@@ -25,6 +25,11 @@ jobs:
         echo "C:\msys64\mingw64\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
         echo "LIBCLANG_PATH=$env:USERPROFILE\scoop\apps\llvm\13.0.0\bin" >> $env:GITHUB_ENV
     - uses: actions/checkout@v2
+    - name: Start SSH session
+      uses: luchihoratiu/debug-via-ssh@main
+      with:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        SSH_PASS: ${{ secrets.SSH_PASS }}
     - name: Build
       run: |
         cargo build --verbose --release --features detect-asm
